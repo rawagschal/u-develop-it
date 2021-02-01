@@ -4,7 +4,9 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-      "start": "node index"
+      "start": "node index",
+      "schema": "mysql -u root -p < db/schema.sql",
+      "seed": "mysql -u root -p < db/seed.sql"
     },
     "author": "",
     "license": "ISC",
