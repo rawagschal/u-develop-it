@@ -1,20 +1,19 @@
 {
-    "name": "u-develop-it",
-    "version": "1.0.0",
-    "description": "",
-    "main": "index.js",
-    "scripts": {
-      "start": "node index",
-      "schema": "mysql -u root -p < db/schema.sql",
-      "seed": "mysql -u root -p < db/seed.sql"
-    },
-    "author": "",
-    "license": "ISC",
-    "dependencies": {
-      "asciiart-logo": "^0.2.6",
-      "console.table": "^0.10.0",
-      "inquirer": "^7.3.3",
-      "mysql2": "^2.2.5"
-    }
+  "name": "u-develop-it",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index",
+    "schema": "mysql -u root -p < db/schema.sql",
+    "seed": "mysql -u root -p < db/seed.sql"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "asciiart-logo": "^0.2.6",
+    "console.table": "^0.10.0",
+    "inquirer": "^7.3.3",
+    "mysql2": "^2.2.5"
   }
-  
+}

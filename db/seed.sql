@@ -2,7 +2,7 @@ USE employees;
 
 INSERT INTO department (name)
 VALUES 
-    ('C Suite'),
+    ('Executive Level'),
     ('Sales'),
     ('Legal'),
     ('HR'),
