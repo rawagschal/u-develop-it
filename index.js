@@ -79,19 +79,21 @@ const menuOptions = () => {
                 console.log("=======================");
                 addRole();
                 break;
+            case 'ADD_EMPLOYEE':
+                console.log("=======================");
+                console.log("ADDING AN EMPLOYEE");
+                console.log("=======================");
+                addEmployee();
+                break;
+            case 'UPDATE_EMPLOYEE_ROLE':
+                console.log("=======================");
+                console.log("UPDATING AN EMPLOYEE");
+                console.log("=======================");
+                updateEmployee();
+                break;
             default:
                 console.log("BYE");
         }
-       
-        // else if('View all employees' === answers.menu_options){
-        //     db.viewAllEmployees().then(menuOptions);
-        // } else if('View all roles' === answers.menu_options){
-        //     db.viewAllRoles().then(menuOptions);
-        // } else if(' Adda department' === answers.menu_options){
-        //     db.addDepartmentOptions().then(menuOptions);
-        // }
-        
-        // 
     })
 };
 
@@ -171,5 +173,114 @@ function addRole() {
     })
 }
 
+function addEmployee() {
+    prompt([
+        {
+            name: "first_name",
+            message: "What is the employee's first name?"
+        },
+        {
+            name: "last_name",
+            message: "What is the employee's last name?"
+        },
+    ]).then(res => {
+        let first = res.first_name;
+        let last = res.last_name;
+
+        db.getAllRoles()
+            .then(([rows]) => {
+                let roles = rows;
+                const roleOptions = roles.map(({ role_id, role }) => ({
+                    name: role,
+                    value: role_id
+                }));
+                prompt ({
+                    type: "list",
+                    name: "role_id",
+                    message: "What is the employee's role?",
+                    choices: roleOptions
+                }).then(res => {
+                    let roleId = res.role_id;
+
+                    db.getAllEmployees()
+                        .then(([rows]) => {
+                            let employees = rows;
+                            const managerOptions = employees.map(({ employee_id, first_name, last_name}) => ({
+                                name: `${first_name} ${last_name}`,
+                                value: employee_id
+                            }));
+                            // option for no manager
+                            managerOptions.unshift({ name: "N/A", value: null});
+
+                            prompt ({
+                                type: "list",
+                                name: "manager_id",
+                                message: "Who is the employee's manager?",
+                                choices: managerOptions
+                            }).then(res => {
+                                let employee = {
+                                    manager_id: res.manager_id,
+                                    role_id: roleId,
+                                    first_name: first,
+                                    last_name: last
+                                }
+
+                                db.createEmployee(employee);
+                            })
+                            .then(() => console.log("==============================="))
+                            .then(() => console.log(`${first} ${last} has been added to the database.`))
+                            .then(() => console.log("==============================="))
+                            .then(() => menuOptions());
+                        })
+                })
+            })
+    })
+}
+
+function updateEmployee() {
+    db.getAllEmployees()
+        .then(([rows]) => {
+            let employees = rows;
+            const employeeOptions = employees.map(({ employee_id, first_name, last_name}) => ({
+                name: `${first_name} ${last_name}`,
+                value: employee_id
+            }));
+
+            prompt([
+                {
+                    type: "list",
+                    name: "employee_id",
+                    message: "Which employee would you like to update?",
+                    choices: employeeOptions
+                }
+            ])
+            .then(res => {
+                let employeeId = res.employee_id;
+                db.getAllRoles()
+                    .then(([rows]) => {
+                        let roles = rows;
+                        const roleOptions = roles.map(({ role_id, role }) => ({
+                            name: role,
+                            value: role_id
+                        }));
+
+                        prompt([
+                            {
+                                type: "list",
+                                name: "role_id",
+                                message: "Which role will the employee be taking?",
+                                choices: roleOptions
+                            }
+                        ])
+                        .then(res => db.updateEmployeeRole(employeeId, res.role_id))
+                        .then(() => console.log("==============================="))
+                        .then(() => console.log(`Employee has been updated.`))
+                        .then(() => console.log("==============================="))
+                        .then(() => menuOptions());
+                        
+                    });
+            });
+        })
+}
 
 menuOptions();
