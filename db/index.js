@@ -8,12 +8,12 @@ class database {
     }
     getAllDepartments() {
         return this.connection.promise().query(
-            "SELECT department.id AS 'dept. id', department.name AS 'department' FROM department;"
+            "SELECT department.id AS 'dept_id', department.name AS 'department' FROM department;"
         );
     }
     getAllRoles() {
         return this.connection.promise().query(
-            "SELECT role.id AS 'role id', role.title AS 'role title', department.name AS 'department', role.salary AS 'role salary' FROM role LEFT JOIN department ON role.department_id = department.id"
+            "SELECT role.id AS 'role_id', role.title AS 'role', department.name AS 'department', role.salary AS 'salary' FROM role LEFT JOIN department ON role.department_id = department.id"
         );
     }
     getAllEmployees() {
@@ -28,7 +28,7 @@ class database {
     }
     createRole(role) { 
         return this.connection.promise().query(
-            "INSERT INTO department SET ?", role
+            "INSERT INTO role SET ?", role
         );
     }
 

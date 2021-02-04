@@ -139,37 +139,36 @@ function addDepartment() {
 }
 
 function addRole() {
-    db.getAllDepartments();
-    console.log(departments);
-    // .then(([rows]) => {
-    //     let departments = rows;
-    //     const departmentOptions = departments.map(({ id, name }) => ({
-    //         name: name,
-    //         value: id
-    //     }));
-    //     prompt([
-    //         {
-    //             name: "title",
-    //             message: "What is the role title?"
-    //         },
-    //         {
-    //             name: "salary",
-    //             message: "What is the role salary?"
-    //         },
-    //         {
-    //             type: "list",
-    //             name: "department_id",
-    //             message: "Which department does this role belong to?",
-    //             choices: departmentOptions
-    //         }
-    //     ]).then(role => {
-    //         db.createRole(role)
-    //         .then(() => console.log("==============================="))
-    //         .then(() => console.log(`The ${role.title} has been added to the ${res.departmentOptions}`))
-    //         .then(() => console.log("==============================="))
-    //         .then(() => menuOptions());
-    //     })
-    // })
+    db.getAllDepartments()
+    .then(([rows]) => {
+        let departments = rows;
+        const departmentOptions = departments.map(({ dept_id, department }) => ({
+            name: department,
+            value: dept_id
+        }));
+        prompt([
+            {
+                name: "title",
+                message: "What is the role title?"
+            },
+            {
+                name: "salary",
+                message: "What is the role salary?"
+            },
+            {
+                type: "list",
+                name: "department_id",
+                message: "Which department does this role belong to?",
+                choices: departmentOptions
+            }
+        ]).then(role => {
+            db.createRole(role)
+            .then(() => console.log("==============================="))
+            .then(() => console.log(`The ${role.title} has been created.`))
+            .then(() => console.log("==============================="))
+            .then(() => menuOptions());
+        })
+    })
 }
 
 
